@@ -2,7 +2,7 @@ import React from 'react'
 import { useModal } from '../context/ModalContext'
 import iphone from '../assets/images/iphone.jpeg'
 
-const Modal = () => {
+const Modal = ({ image, title, price }) => {
 
   const { isModalOpen, closeModal } = useModal()
 
@@ -22,7 +22,7 @@ const Modal = () => {
         <div className='flex items-center space-x-4'>
           <img className='rounded-xl p-4 w-32 object-cover' src={iphone} alt="iPhone" />
           <div>
-            <h1 className='text-lg font-semibold mb-2'>Name: iPhone</h1>
+            <h1 className='text-lg font-semibold mb-2'>Name: {title}</h1>
             <p className='text-sm mb-2'>OS: iOS</p>
             <p className='text-sm mb-2'>Price: $10,000</p>
           </div>
