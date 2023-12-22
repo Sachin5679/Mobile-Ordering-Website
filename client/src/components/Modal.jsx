@@ -1,14 +1,14 @@
-import React from 'react'
-import { useModal } from '../context/ModalContext'
-import iphone from '../assets/images/iphone.jpeg'
+import React from 'react';
+import { useModal } from '../context/ModalContext';
 
-const Modal = ({ image, title, price }) => {
-
-  const { isModalOpen, closeModal } = useModal()
+const Modal = () => {
+  const { isModalOpen, closeModal, modalData } = useModal();
 
   if (!isModalOpen) {
-    return null
+    return null;
   }
+
+  const { id, image, title, price, os, processor, memory, brand } = modalData;
 
   return (
     <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
@@ -20,16 +20,19 @@ const Modal = ({ image, title, price }) => {
           </button>
         </div>
         <div className='flex items-center space-x-4'>
-          <img className='rounded-xl p-4 w-32 object-cover' src={iphone} alt="iPhone" />
+          <img className='rounded-xl p-4 w-32 object-cover' src={image} alt={title} />
           <div>
             <h1 className='text-lg font-semibold mb-2'>Name: {title}</h1>
-            <p className='text-sm mb-2'>OS: iOS</p>
-            <p className='text-sm mb-2'>Price: $10,000</p>
+            <p className='text-sm mb-2'>Price: Rs. {price}</p>
+            <p className='text-sm mb-2'>Operating System: {os}</p>
+            <p className='text-sm mb-2'>Processor: {processor}</p>
+            <p className='text-sm mb-2'>Memory: {memory}</p>
+            <p className='text-sm mb-2'>Brand: {brand}</p>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;
