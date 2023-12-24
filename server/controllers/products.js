@@ -8,6 +8,7 @@ const getAllProducts = async (req, res) => {
       os: req.query.os,
       processor: req.query.processor,
     };
+    const searchTerm = req.query.searchTerm
   
     try {
       let query = {};
@@ -20,6 +21,9 @@ const getAllProducts = async (req, res) => {
       }
       if (filters.processor) {
         query.processor = { $in: filters.processor };
+      }
+      if (searchTerm) {
+        query.name = { $regex: new RegExp(searchTerm, 'i') };
       }
   
       const totalCount = await Product.countDocuments(query);

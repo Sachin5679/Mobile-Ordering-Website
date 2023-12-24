@@ -29,6 +29,7 @@ const Products = () => {
             price: filters.price,
             os: filters.os,
             processor: filters.processor,
+            searchTerm: searchTerm
           },
         });
         setPhones(response.data.products)
@@ -38,7 +39,7 @@ const Products = () => {
       }
     }
     fetchData()
-  },[currentPage, filters])
+  },[currentPage, filters, searchTerm])
 
   const handleSearch = () => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
@@ -51,7 +52,6 @@ const Products = () => {
   const handleFilterChange = (filterName, value) => {
     setCurrentPage(1);
     setFilters({ ...filters, [filterName]: value });
-    fetchData()
   };
 
   const handleFiltersOpen = () => {
