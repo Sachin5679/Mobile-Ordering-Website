@@ -23,3 +23,7 @@ This project is a clone of a mobile ordering website, built using React.js for t
 - Search for mobile phones based on filters.
 - View detailed information about each mobile product.
 - Responsive design for a seamless user experience on various devices.
+
+## Screen Recordings
+
+- https://drive.google.com/drive/folders/1XGv-4nwHZD1cyl1PDAuHQy1JN_0znfOE?usp=sharing
