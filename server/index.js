@@ -17,6 +17,10 @@ app.use(cors(
 app.use(express.json())
 connectDB();
 
+app.get('/', (req, res) => {
+    res.json("Hello")
+})
+
 app.use('/products', prodRoute)
 app.listen(PORT, () => {
     console.log("Server running");
