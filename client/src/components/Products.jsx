@@ -23,6 +23,7 @@ const Products = () => {
     const fetchData = async() => {
       try {
         const response = await axios.get('http://localhost:3000/products', {
+          withCredentials: true,
           params: {
             page: currentPage, 
             limit: phonesPerPage, 
