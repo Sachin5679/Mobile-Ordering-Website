@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons';
 import MobileCard from './MobileCard';
-import iphone from '../assets/images/iphone.jpeg';
-import samsungs22 from '../assets/images/samsungs22.jpeg';
-import huawei from '../assets/images/huwawei.jpeg';
-import oppo from '../assets/images/oppo.jpeg';
 import axios from 'axios';
 
 const Products = () => {
@@ -41,7 +37,7 @@ const Products = () => {
   const handleSearch = () => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     const results = phones.filter(phone =>
-      phone.title.toLowerCase().includes(lowerCaseSearchTerm)
+      phone.name.toLowerCase().includes(lowerCaseSearchTerm)
     );
     setSearchResults(results);
   };
@@ -53,6 +49,14 @@ const Products = () => {
   const handleFiltersOpen = () => {
     setShowFilterOptions(!showFilterOptions);
   };
+
+  const handleClearFilters = () => {
+    setFilters({
+      price:'',
+      os:[],
+      processor:[],
+    })
+  }
 
   const displayPhones = () => {
     let filteredPhones = phones || [];
@@ -79,7 +83,7 @@ const Products = () => {
       );
     }
   
-    // Apply Processor filter
+    
     if (filters.processor.length > 0) {
       filteredPhones = filteredPhones.filter((phone) =>
         filters.processor.includes(phone.processor)
@@ -116,63 +120,75 @@ const Products = () => {
       </div>
 
       {showFilterOptions && (
-        <div className="mb-4">
-          <label className="block mb-2">
-            Price Range:
-            <input
-              type="range"
-              min="0"
-              max="100000"
-              step="100"
-              value={filters.price}
-              onChange={(e) => handleFilterChange('price', e.target.value)}
-              className="w-full px-4"
-            />
-            {filters.price && (
-              <span className="text-blue-500">Price: Rs. {filters.price}</span>
-            )}
-          </label>
+        <div className='md:px-20'>
+          <div className="mb-10 bg-slate-300 p-5 rounded-xl shadow-xl">
+            <label className="block mb-2">
+              Price Range:
+              <input
+                type="range"
+                min="0"
+                max="100000"
+                step="100"
+                value={filters.price}
+                onChange={(e) => handleFilterChange('price', e.target.value)}
+                className="w-full px-4"
+              />
+              {filters.price && (
+                <span className="text-blue-500">Price: Rs. {filters.price}</span>
+              )}
+            </label>
 
-          <label className="block mb-2">
-            Operating System:
-            <select
-              multiple
-              value={filters.os}
-              onChange={(e) =>
-                handleFilterChange(
-                  'os',
-                  Array.from(e.target.selectedOptions, (option) => option.value)
-                )
-              }
-              className="w-full border p-2 rounded"
-            >
-              <option value="Android">Android</option>
-              <option value="iOS">iOS</option>
-            </select>
-          </label>
+            <label className="block mb-2">
+              Operating System:
+              <select
+                multiple
+                value={filters.os}
+                onChange={(e) =>
+                  handleFilterChange(
+                    'os',
+                    Array.from(e.target.selectedOptions, (option) => option.value)
+                  )
+                }
+                className="w-full border p-2 rounded-xl shadow-xl"
+              >
+                <option value="Android">Android</option>
+                <option value="iOS">iOS</option>
+              </select>
+            </label>
 
-          <label className="block mb-2">
-            Processor:
-            <select
-              multiple
-              value={filters.processor}
-              onChange={(e) =>
-                handleFilterChange(
-                  'processor',
-                  Array.from(e.target.selectedOptions, (option) => option.value)
-                )
-              }
-              className="w-full border p-2 rounded"
+            <label className="block mb-2">
+              Processor:
+              <select
+                multiple
+                value={filters.processor}
+                onChange={(e) =>
+                  handleFilterChange(
+                    'processor',
+                    Array.from(e.target.selectedOptions, (option) => option.value)
+                  )
+                }
+                className="w-full border p-2 rounded-xl shadow-xl"
+              >
+                <option value="Hexa-core">HexaCore</option>
+                <option value="Octa-core">OctaCore</option>
+              </select>
+            </label>
+            <button
+              onClick={handleClearFilters}
+              className="px-4 py-2 bg-white shadow-xl text-blue-500 rounded-full flex items-center hover:text-white hover:bg-blue-500 transition 3s"
             >
-              <option value="Hexa-core">HexaCore</option>
-              <option value="Octa-core">OctaCore</option>
-            </select>
-          </label>
+              Clear Filters
+            </button>
+          </div>
         </div>
+
       )}
 
-      <div className='flex justify-center'>
+      <div className='flex justify-center items-center w-full h-full'>
         <div className='grid md:grid-cols-4 grid-cols-2 gap-12'>
+          {displayPhones().length === 0 && (
+            <p className='text-gray-400 p-5 text-xl'>No results found. Please adjust your search or filters.</p>
+          )}
           {displayPhones().map(phone => (
             <MobileCard
               key={phone._id}
