@@ -22,7 +22,7 @@ const Products = () => {
   useEffect(() => {
     const fetchData = async() => {
       try {
-        const response = await axios.get('http://localhost:3000/products', {
+        const response = await axios.get('https://mobile-ordering-website-api.vercel.app/products', {
           withCredentials: true,
           params: {
             page: currentPage, 
