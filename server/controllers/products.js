@@ -1,17 +1,46 @@
 const Product = require('../models/product')
 
-const getAllProducts = async(req, res) => {
+const getAllProducts = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 8;
+    const filters = {
+      price: req.query.price,
+      os: req.query.os,
+      processor: req.query.processor,
+    };
+  
     try {
-        const products = await Product.find()
-        const prodWithImg = products.map(product => ({
-            ...product._doc,
-            image: `data:${product.image.contentType};base64,${product.image.data.toString('base64')}`,
-        }))
-        res.status(201).json(prodWithImg)
+      let query = {};
+  
+      if (filters.price) {
+        query.price = { $lte: parseInt(filters.price) };
+      }
+      if (filters.os) {
+        query.os = { $in: filters.os };
+      }
+      if (filters.processor) {
+        query.processor = { $in: filters.processor };
+      }
+  
+      const totalCount = await Product.countDocuments(query);
+      const totalPages = Math.ceil(totalCount / limit);
+      const products = await Product.find(query).skip((page - 1) * limit).limit(limit);
+  
+      const prodWithImg = products.map((product) => ({
+        ...product._doc,
+        image: `data:${product.image.contentType};base64,${product.image.data.toString('base64')}`,
+      }));
+  
+      res.status(201).json({
+        products: prodWithImg,
+        totalPages: totalPages,
+        currentPage: page,
+      });
     } catch (err) {
-        res.status(500).json({ error: 'An error has occured' });
+      res.status(500).json({ error: 'An error has occurred' });
     }
-}
+  };
+  
 
 const getProductById = async(req, res) => {
     const id = req.params.id

@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../context/ModalContext';
 
 const Modal = () => {
@@ -15,8 +17,8 @@ const Modal = () => {
       <div className='bg-gray-300 p-8 rounded-lg w-96'>
         <div className='flex justify-between items-center mb-4'>
           <h1 className='text-4xl font-bold'>{title}</h1>
-          <button className='font-semibold text-red-500' onClick={closeModal}>
-            Close
+          <button className='font-semibold text-red-500 hover:text-xl transition 1s' onClick={closeModal}>
+            <FontAwesomeIcon icon={faTimes} />
           </button>
         </div>
         <div className='flex items-center space-x-4'>

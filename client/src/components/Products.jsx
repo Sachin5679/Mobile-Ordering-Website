@@ -7,6 +7,9 @@ import axios from 'axios';
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1);
+  const phonesPerPage = 8;
 
   const [filters, setFilters] = useState({
     price: '',
@@ -15,24 +18,27 @@ const Products = () => {
   });
   const [showFilterOptions, setShowFilterOptions] = useState(false);
 
-  // const phones = [
-  //   { id: 1, image: iphone, title: "iPhone 14", price: 69900, os: "iOS", processor: 'Hexa-core', memory: '128GB 6GB RAM', brand: 'Apple' },
-  //   { id: 2, image: samsungs22, title: "Galaxy S22", price: 36999, os: "Android", processor: 'Octa-core', memory: '128 GB 8 GB RAM', brand: 'Samsung' },
-  //   { id: 3, image: huawei, title: "Huawei P30", price: 59990, os: 'Android', processor: 'Octa-core', memory: '128 GB 6 GB RAM', brand: 'Huawei' },
-  //   { id: 4, image: oppo, title: "Oppo A94", price: 23990, os: 'Android', processor: 'Octa-core', memory: '128GB 8GB RAM', brand: 'Oppo' },
-  // ];
   const [phones, setPhones] = useState()
   useEffect(() => {
     const fetchData = async() => {
       try {
-        const response = await axios.get('http://localhost:3000/products');
-        setPhones(response.data)
+        const response = await axios.get('http://localhost:3000/products', {
+          params: {
+            page: currentPage, 
+            limit: phonesPerPage, 
+            price: filters.price,
+            os: filters.os,
+            processor: filters.processor,
+          },
+        });
+        setPhones(response.data.products)
+        setTotalPages(response.data.totalPages);
       } catch (err) {
         console.error('Error fetching data: ', err)
       }
     }
     fetchData()
-  },[])
+  },[currentPage, filters])
 
   const handleSearch = () => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
@@ -43,7 +49,9 @@ const Products = () => {
   };
 
   const handleFilterChange = (filterName, value) => {
+    setCurrentPage(1);
     setFilters({ ...filters, [filterName]: value });
+    fetchData()
   };
 
   const handleFiltersOpen = () => {
@@ -58,10 +66,17 @@ const Products = () => {
     })
   }
 
+  const handlePreviousPage = () => {
+    setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages));
+  };
+
   const displayPhones = () => {
     let filteredPhones = phones || [];
   
-    // Apply search filter
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       filteredPhones = filteredPhones.filter((phone) =>
@@ -171,6 +186,7 @@ const Products = () => {
               >
                 <option value="Hexa-core">HexaCore</option>
                 <option value="Octa-core">OctaCore</option>
+                <option value="Quad-core">QuadCore</option>
               </select>
             </label>
             <button
@@ -183,6 +199,26 @@ const Products = () => {
         </div>
 
       )}
+
+      <div className='flex justify-center my-4'>
+        <button
+          onClick={handlePreviousPage}
+          className='px-4 py-2 bg-blue-500 text-white rounded-full mr-2'
+          disabled={currentPage === 1}
+        >
+          &lt;
+        </button>
+        <span className='text-gray-700'>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={handleNextPage}
+          className='px-4 py-2 bg-blue-500 text-white rounded-full ml-2'
+          disabled={currentPage === totalPages}
+        >
+          &gt;
+        </button>
+      </div>
 
       <div className='flex justify-center items-center w-full h-full'>
         <div className='grid md:grid-cols-4 grid-cols-2 gap-12'>
@@ -204,6 +240,7 @@ const Products = () => {
           ))}
         </div>
       </div>
+
     </div>
   );
 };
