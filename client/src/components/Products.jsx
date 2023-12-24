@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons';
 import MobileCard from './MobileCard';
@@ -6,6 +6,7 @@ import iphone from '../assets/images/iphone.jpeg';
 import samsungs22 from '../assets/images/samsungs22.jpeg';
 import huawei from '../assets/images/huwawei.jpeg';
 import oppo from '../assets/images/oppo.jpeg';
+import axios from 'axios';
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,12 +19,24 @@ const Products = () => {
   });
   const [showFilterOptions, setShowFilterOptions] = useState(false);
 
-  const phones = [
-    { id: 1, image: iphone, title: "iPhone 14", price: 69900, os: "iOS", processor: 'Hexa-core', memory: '128GB 6GB RAM', brand: 'Apple' },
-    { id: 2, image: samsungs22, title: "Galaxy S22", price: 36999, os: "Android", processor: 'Octa-core', memory: '128 GB 8 GB RAM', brand: 'Samsung' },
-    { id: 3, image: huawei, title: "Huawei P30", price: 59990, os: 'Android', processor: 'Octa-core', memory: '128 GB 6 GB RAM', brand: 'Huawei' },
-    { id: 4, image: oppo, title: "Oppo A94", price: 23990, os: 'Android', processor: 'Octa-core', memory: '128GB 8GB RAM', brand: 'Oppo' },
-  ];
+  // const phones = [
+  //   { id: 1, image: iphone, title: "iPhone 14", price: 69900, os: "iOS", processor: 'Hexa-core', memory: '128GB 6GB RAM', brand: 'Apple' },
+  //   { id: 2, image: samsungs22, title: "Galaxy S22", price: 36999, os: "Android", processor: 'Octa-core', memory: '128 GB 8 GB RAM', brand: 'Samsung' },
+  //   { id: 3, image: huawei, title: "Huawei P30", price: 59990, os: 'Android', processor: 'Octa-core', memory: '128 GB 6 GB RAM', brand: 'Huawei' },
+  //   { id: 4, image: oppo, title: "Oppo A94", price: 23990, os: 'Android', processor: 'Octa-core', memory: '128GB 8GB RAM', brand: 'Oppo' },
+  // ];
+  const [phones, setPhones] = useState()
+  useEffect(() => {
+    const fetchData = async() => {
+      try {
+        const response = await axios.get('http://localhost:3000/products');
+        setPhones(response.data)
+      } catch (err) {
+        console.error('Error fetching data: ', err)
+      }
+    }
+    fetchData()
+  },[])
 
   const handleSearch = () => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
@@ -42,24 +55,24 @@ const Products = () => {
   };
 
   const displayPhones = () => {
-    let filteredPhones = phones;
+    let filteredPhones = phones || [];
   
     // Apply search filter
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       filteredPhones = filteredPhones.filter((phone) =>
-        phone.title.toLowerCase().includes(lowerCaseSearchTerm)
+        phone.name.toLowerCase().includes(lowerCaseSearchTerm)
       );
     }
   
-    // Apply price filter
+    
     if (filters.price) {
       filteredPhones = filteredPhones.filter(
         (phone) => phone.price <= parseInt(filters.price)
       );
     }
   
-    // Apply OS filter
+    
     if (filters.os.length > 0) {
       filteredPhones = filteredPhones.filter((phone) =>
         filters.os.includes(phone.os)
@@ -75,6 +88,8 @@ const Products = () => {
   
     return filteredPhones;
   };
+
+  
 
   return (
     <div className='p-10'>
@@ -160,10 +175,10 @@ const Products = () => {
         <div className='grid md:grid-cols-4 grid-cols-2 gap-12'>
           {displayPhones().map(phone => (
             <MobileCard
-              key={phone.id}
-              id={phone.id}
+              key={phone._id}
+              id={phone._id}
               image={phone.image}
-              title={phone.title}
+              title={phone.name}
               price={phone.price}
               os={phone.os}
               processor={phone.processor}

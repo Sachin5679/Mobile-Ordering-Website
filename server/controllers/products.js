@@ -3,7 +3,11 @@ const Product = require('../models/product')
 const getAllProducts = async(req, res) => {
     try {
         const products = await Product.find()
-        res.status(201).json(products)
+        const prodWithImg = products.map(product => ({
+            ...product._doc,
+            image: `data:${product.image.contentType};base64,${product.image.data.toString('base64')}`,
+        }))
+        res.status(201).json(prodWithImg)
     } catch (err) {
         res.status(500).json({ error: 'An error has occured' });
     }
@@ -22,12 +26,13 @@ const getProductById = async(req, res) => {
 
 const addProduct = async(req, res) => {
     const { name, brand, price, os, processor, memory } = req.body;
+    const image = req.file;
 
     if (!name || !brand || !price || !os || !processor || !memory) {
         return res.status(400).json({ error: 'All attributes are required' });
     }
 
-    if (!req.file) {
+    if (!image) {
         return res.status(400).json({ error: 'Image is required' });
     }
 
