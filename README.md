@@ -38,3 +38,20 @@ This project is a clone of a mobile ordering website, built using React.js for t
 - ![image](https://github.com/Sachin5679/Mobile-Ordering-Website/assets/93666921/ad88f07a-3669-41de-b986-0123ce742262)
 
 - The results might take some time to load on the screen
+
+## In case you want to run locally:
+
+# Install Dependencies
+
+**For Backend** - `cd server' npm i`
+
+**For Frontend** - `cd client` ` npm i`
+
+# Env Variables
+
+Make Sure to Create a .env file in the server directory and add appropriate variables in order to use the app.
+
+**Essential Variables**
+- MONGODB_CONNECT_URI
+- PORT
+
