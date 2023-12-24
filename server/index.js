@@ -9,7 +9,7 @@ const app = express()
 const PORT = process.env.PORT;
 app.use(cors(
     {
-        origin: ["https://mobile-ordering-website-frontend.vercel.app"],
+        origin: ["https://mobile-ordering-website-frontend.vercel.app/"],
         methods: ["POST", "GET"],
         credentials: true,
     }
