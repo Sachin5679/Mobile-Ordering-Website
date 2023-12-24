@@ -31,3 +31,9 @@ This project is a clone of a mobile ordering website, built using React.js for t
 ## Screen Recordings
 
 - https://drive.google.com/drive/folders/1XGv-4nwHZD1cyl1PDAuHQy1JN_0znfOE?usp=sharing
+
+## Note
+
+- To try posting data, open postman, hit a POST request to "https://mobile-ordering-website-api.vercel.app/products/add". Add the data in the body in the form of form-data
+- ![image](https://github.com/Sachin5679/Mobile-Ordering-Website/assets/93666921/227faa20-f3f7-4338-8fd3-13028439e62c)
+- The results might take some time to load on the screen
