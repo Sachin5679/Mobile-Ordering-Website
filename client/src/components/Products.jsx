@@ -124,7 +124,7 @@ const Products = () => {
           onClick={handleSearch}
           className='px-4 py-2 bg-blue-500 shadow-xl text-white rounded-full flex items-center hover:text-blue-500 hover:bg-white transition 3s'
         >
-          <FontAwesomeIcon icon={faSearch} className='' />
+          <FontAwesomeIcon icon={faSearch} />
         </button>
         <button
           onClick={handleFiltersOpen}

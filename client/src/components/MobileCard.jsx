@@ -13,7 +13,7 @@ const MobileCard = ({ id, image, title, price, os, processor, memory, brand }) =
   return (
     <div className='bg-gray-100 shadow-xl p-4 rounded-xl'>
       <img className='rounded-xl' src={image} alt="" />
-      <div className='flex justify-between mt-3'>
+      <div className='md:flex justify-between mt-3'>
         <h3 className='text-xl font-bold'>{title}</h3>
         <p className='font-light'>Rs. {price}</p>
       </div>
