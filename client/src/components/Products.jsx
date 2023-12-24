@@ -224,7 +224,10 @@ const Products = () => {
       <div className='flex justify-center items-center w-full h-full'>
         <div className='grid md:grid-cols-4 grid-cols-2 gap-12'>
           {displayPhones().length === 0 && (
-            <p className='text-gray-400 p-5 text-xl'>No results found. Please adjust your search or filters.</p>
+            <div>
+              <p className='text-gray-400 h-screen p-5 text-xl'>No results found. Please adjust your search or filters.</p>
+            </div>
+            
           )}
           {displayPhones().map(phone => (
             <MobileCard
